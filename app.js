@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const grapgqlHttp = require("express-graphql");
 const { buildSchema } = require("graphql");
+const mongoose = require("mongoose");
 
 const app = express();
 
@@ -62,4 +63,13 @@ app.use(
   })
 );
 
-app.listen(3000);
+const dbUrl = `mongodb+srv://${process.env.MONGO_USER}:mundi123@cluster0-nmbov.mongodb.net/test?retryWrites=true&w=majority`;
+
+mongoose
+  .connect(dbUrl)
+  .then(() => {
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
